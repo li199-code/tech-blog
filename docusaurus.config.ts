@@ -13,14 +13,18 @@ const config: Config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
+    plugins: [[ require.resolve('docusaurus-lunr-search'), {
+      languages: ['en', 'zh'] // language codes
+    }]],
+
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'li199-code', // Usually your GitHub org/user name.
-  projectName: 'li199-code.github.io', // Usually your repo name.
-  deploymentBranch: 'main',
+  // organizationName: 'li199-code', // Usually your GitHub org/user name.
+  // projectName: 'li199-code.github.io', // Usually your repo name.
+  // deploymentBranch: 'main',
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'ignore',
+  onBrokenMarkdownLinks: 'ignore',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -82,10 +86,6 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
             {
               label: 'GitHub',
               href: 'https://github.com/li199-code',
