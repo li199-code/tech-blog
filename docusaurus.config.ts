@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Jason Lee On Tech',
+  title: '我的技术博客',
   tagline: 'Jason Lee On Tech',
   favicon: 'img/favicon.ico',
 
