@@ -29,10 +29,10 @@ const config: Config = {
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
-  // i18n: {
-  //   defaultLocale: 'zh-Hans',
-  //   locales: ['zh-Hans'],
-  // },
+  i18n: {
+    defaultLocale: 'zh-Hans',
+    locales: ['zh-Hans'],
+  },
 
 
   presets: [
@@ -42,7 +42,7 @@ const config: Config = {
         blog: {
           routeBasePath: '/',
           // 控制侧边栏显示的文章数量
-          blogSidebarCount: 50, // 设置为具体的数字，如 5
+          blogSidebarCount: 10, // 设置为具体的数字，如 5
           // blogSidebarCount: 'ALL', // 如果要显示所有文章
           
           // 自定义侧边栏标题
