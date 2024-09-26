@@ -93,7 +93,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Jason Lee, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © 2022-${new Date().getFullYear()} Jason Lee. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
