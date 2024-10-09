@@ -1,0 +1,25 @@
+/* src/components/LinkCard.module.css */
+.card {
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cardContent h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.cardContent p {
+    margin: 8px 0 0;
+    font-size: 1rem;
+    color: #666;
+}
