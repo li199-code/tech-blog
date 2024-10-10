@@ -1,20 +1,33 @@
 ---
-title: JS之Promise
+title: 通俗易懂的Promise解释
 tags: [javascript]
 categories: JavaScript异步编程
 abbrlink: 5d9fa5e8
 date: 2022-07-26 17:58:45
 ---
 
+本博客的第一篇文章，讲讲 Javascript 里的 Promise。Promise 要记住的点：
+
+- 写法
+- 用法
+
+这篇文章，不谈那些状态，而是尽量接触问题的本质，谈谈 Promise 究竟解决了什么问题，在何时用。
+
+<!-- truncate -->
+
 ## 为什么需要 promise
 
-首先，存在一次异步任务的需求。然后又有了多次异步任务的需求，而多次异步的书写存在函数瀑布问题，不利于阅读和维护：
+名词解释：回调函数，指一个任务执行完了，需要调用的函数。
+
+多个异步任务，如果采用回调函数的写法，且任务 B 依赖任务 A 的返回，那么任务 B 只能写在 A 的回调函数里。
 
 <!--more-->
 
 ```javascript
+// A
 setTimeout(function () {
   console.log("First");
+  // B
   setTimeout(function () {
     console.log("Second");
     setTimeout(function () {
@@ -24,14 +37,14 @@ setTimeout(function () {
 }, 1000);
 ```
 
-所以，出现了 promise 对象，将多次异步代码写成顺序格式而非嵌套格式：
+如果这样的依赖链条很长，就会出现很深的嵌套，可读性差。于是，promise 对象被提出了，将多次异步代码写成顺序格式而非嵌套格式：
 
 ```javascript
 function print(delay, message) {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
-      console.log(message);
-      resolve();
+      // console.log(message);
+      resolve(message);
     }, delay);
   });
 }
@@ -44,122 +57,125 @@ print(1000, "First")
   });
 ```
 
-因此，异步是异步，promise 是 promise，异步任务的实现靠的是 javascript 的事件循环机制，而不是 promise，promise 仅是改变了需要按顺序执行的多个异步任务的书写格式。
+因此，异步是异步，promise 是 promise，异步任务的实现靠的是 javascript 的事件循环机制，而不是 promise，promise 仅是改变了需要按顺序执行的多个异步任务的书写格式。从 promise 的字面意义上，即“承诺”，可以解释为保证异步任务的按顺序执行。
 
-## promise 的本质
+## resolve/reject
 
-Promise 是一个构造函数，它接收一个函数作为形参，实例化一个 p 对象。相比于普通对象，p 对象有两个特殊属性：状态和结果。
+到这里，应该要记住 promise 的形式。new 出来一个 promise 对象，其中传入一个参数为`resolve`和`reject`的匿名函数：
 
-### 状态
+resolve 意为解决，表示任务成功，将任务结果给下一个异步任务。执行到 resolve 后，代码会跳转到下面最近的一个 then 中。then 的参数也是一个匿名函数，这个函数的参数接收 resolve 传来的数据。
 
-通过在形参函数中调用 resolve()和 reject()改变状态，并且只能改一次.状态有三种，分别是 pending/fullfilled/reject.没执行 resolve() or reject()之前的状态是 pending。
+reject 意为拒绝，表示任务失败，并将错误信息传到最近的一个 catch 中，catch 内容和 then 相似。
 
-### 结果
+## async/await
 
-通过 resolve/reject 函数传递参数，改变当前 promise 对象结果
-
-```js
-const p = new Promise((resolve, reject) => {
-  resolve("homo");
-});
-console.log(p); // state:fullfilled, result:'homo'
-```
-
-## 构造函数和 then 方法
-
-<!-- then方法可以接收两个函数作为形参，第一个是处理成功状态的事件，第二个处理失败状态的事件。在p对象中的`resolve()`方法内可传入数据，数据流入到上面对应的两个函数之一。 -->
-
-promise 是靠多个 then 完成多个异步任务的按顺序执行的。怎么实现的？then 可以注册 resolve 和 reject。若要嵌套，要写成下面这种形式,return 一个新的 promise，value 在异步代码中使用。
+不得不说，现在没人用 promise 刚提出时推荐的`then/catch`链条逻辑了。取而代之的是具有同步写法的`async/await`。async 可以简单理解为一个声明符，表示这是一个异步执行函数。await 后面跟的是一个返回 promise 对象的步骤（如果不是，也会强制包装成 promise）。然后就是一个精彩的点：如果用一个变量接收 await 返回的 promise 对象，这个变量会自动变成 promise 对象的值(result)。看一个例子：
 
 ```js
-new Promise((resolve) => {
-  // setTimeout(()=>{
-  // 	resolve('1')
-  // },500)
-})
-  .then((value) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(value + " 2");
-      });
-    });
-  })
-  .then((value) => {
-    // console.log(value);
+function print(delay, message) {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      // console.log(message);
+      resolve(message);
+    }, delay);
   });
+}
+
+> print(100, 'some')
+// Promise {<pending>}
+// [[Prototype]]
+// :
+// Promise
+// [[PromiseState]]
+// :
+// "fulfilled"
+// [[PromiseResult]]
+// :
+// "some"
+
+> const a = await print(100, 'some')
+> a
+// 'some'
+> typeof a
+// string
 ```
 
-<!-- then方法将返回一个新的promise对象，初始状态为pending。promise状态不改变，就不会执行then里的方法。
+## promise 周边函数
 
-在then方法中，通过return将返回的promise实例状态修改为fullfilled。return返回的数据将会作为下一个then中`处理成功状态的事件`方法的参数，从而达到拿到数据的操作。
+1. `Promise.all(iterable)`
 
-如果在then中return一个新的promise对象，就相当于替换当前的默认promise，从而可以执行promise执行体内的代码，实现特定业务逻辑。 -->
+- 接收一个可迭代对象（如数组）作为参数，其中每个元素都是 `Promise`。
 
-把 promise 对象当作一个容器，里面装了一个异步事件，promise 对象保证了当前异步事件执行完毕才会执行下一个事件。
+- 返回一个新的 `Promise`，只有当所有的 `Promise` 都变为 “fulfilled” 时，它才会变为 “fulfilled”，并将所有结果值组成数组传递给 `.then()`。
 
-<!-- 这里引用一下知乎的回答：<a href='https://zhuanlan.zhihu.com/p/26523836'> -->
+- 如果有任何一个 `Promise` 变为 “rejected”，则 `Promise.all()` 立即变为 “rejected”，并将第一个错误原因传递给 `.catch()`。
 
-1. 构造实例
-   构造函数接受一个函数作为参数
-   调用构造函数得到实例 p 的同时，作为参数的函数会立即执行
-   参数函数接受两个回调函数参数 resolve 和 reject
-   在参数函数被执行的过程中，如果在其内部调用 resolve，会将 p 的状态变成 fulfilled，或者调用 reject，会将 p 的状态变成 rejected
-
-2. 调用.then
-   调用.then 可以为实例 p 注册两种状态回调函数
-   当实例 p 的状态为 fulfilled，会触发第一个函数执行
-   当实例 p 的状态为 rejected，则触发第二个函数执行
-
-如果代码执行出现错误，而没有 catch 或者 then 接受错误的话，控制台会报错。
-
-下面的代码可以充分体现了，promise 对象解决了异步函数的多重回调问题。
-
-```js
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
-	<script>
-		function getData(url, data={}){
-			return new Promise((resolve, reject)=>{
-				$.ajax({
-					type:'GET',
-					url:url,
-					data:data,
-					success:function(res){
-						const {result} = res
-						console.log(res);
-						resolve(result)
-					}
-				})
-			})
-		}
-
-		getData('data1.json').then((value)=>{
-			getData('data2.json', value)
-		} )
-	</script>
-</body>
-</html>
+```javascript
+const p3 = Promise.all([
+  Promise.resolve(1),
+  Promise.resolve(2),
+  Promise.resolve(3),
+]);
+p3.then((values) => console.log(values)); // 输出: [1, 2, 3]
 ```
 
-## Promise.all()
+2. `Promise.allSettled(iterable)`
 
-作用：一次接受多个异步事件，并保证他们的都得到结果了，才会执行 then
-输入参数：数组、map 等
-输出：一个新的 promise 对象，根据数组中所有 promise 的执行结果而进入不同的函数。若数组中所有的 promise 都是 fullfilled，则会执行 then。
+- 接收一个可迭代对象，并返回一个在所有 `Promise` 都已完成（无论是“fulfilled”还是“rejected”）后才完成的 `Promise`。
 
-## Promise.any()
+- 返回值是包含每个 `Promise` 状态和结果的对象数组。
 
-作用：一次接受多个异步事件，其中有一个成功就行
-输入参数：数组、map 等
+```javascript
+const p4 = Promise.allSettled([
+  Promise.resolve(1),
+  Promise.reject("Error"),
+  Promise.resolve(3),
+]);
+p4.then((results) => console.log(results));
+// 输出:
+// [
+//   { status: "fulfilled", value: 1 },
+//   { status: "rejected", reason: "Error" },
+//   { status: "fulfilled", value: 3 }
+// ]
+```
 
-## Promise.resolve(p)/reject(p)
+3. `Promise.race(iterable)`
 
-返回一个状态为 fullfilled/rejected,结果为 p 的 promise 对象。
+- 接收一个可迭代对象，返回第一个完成的 `Promise` 的结果。
+
+- 只要有一个 `Promise` 完成（无论是“fulfilled”还是“rejected”），就会返回该状态。
+
+```javascript
+const p5 = Promise.race([
+  new Promise((resolve) => setTimeout(() => resolve("First"), 100)),
+  new Promise((resolve) => setTimeout(() => resolve("Second"), 200)),
+]);
+p5.then(console.log); // 输出: "First"
+```
+
+4. `Promise.any(iterable)`
+
+- 接收一个可迭代对象，返回第一个 “fulfilled” 的 `Promise` 的结果。
+
+- 如果所有的 `Promise` 都被拒绝，则返回一个状态为“rejected”的 `Promise`，并且 `reason` 是一个 `AggregateError`，包含所有被拒绝的原因。
+
+```javascript
+const p6 = Promise.any([
+  Promise.reject("Error 1"),
+  Promise.reject("Error 2"),
+  Promise.resolve("Success"),
+]);
+p6.then(console.log).catch((error) => console.error(error));
+// 输出: "Success"
+```
+
+### 总结
+
+- `Promise.all()`：用于并行执行多个 `Promise`，并在所有的状态都为"fullfilled"时返回结果。
+
+- `Promise.allSettled()`：用于等待多个 `Promise` 的全部完成，不论其状态。
+
+- `Promise.race()`：返回最先完成的 `Promise` 结果。
+
+- `Promise.any()`：返回第一个成功的 `Promise` 结果，若全部失败，则返回一个 `AggregateError`。
