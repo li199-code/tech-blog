@@ -2,11 +2,13 @@
 .card {
     display: block;
     border: 1px solid #ddd;
+    background-color: #eee;
     border-radius: 8px;
     padding: 16px;
     text-decoration: none;
     color: inherit;
     transition: box-shadow 0.3s ease;
+    margin-bottom: 16px;
 }
 
 .card:hover {

@@ -10,25 +10,29 @@ date: 2024-06-22 18:52:40
 
 <!-- truncate -->
 
-## ClusterIP Service
+在 Kubernetes 中，`Service` 是一种抽象，定义了一组逻辑上相同的 Pod，并提供了稳定的网络服务入口。`Service` 有三种主要类型，分别是：
+
+1. **ClusterIP（默认类型）**
 
 ![clusterIP工作场景](https://cdn.jsdelivr.net/gh/li199-code/blog-imgs@main/17190591816891719059180297.png)
 
-ClusterIP 是 service 的一种类型，负责管内部的网络通信。k8s 中，每个 pod 都有独立的 ip，但是 pod 是非稳定的，很容易创建销毁，ip 地址也随之改变。clusterIP 的 service 就是通过 selector 确定请求转发到哪种 pod，还有 targetPort 属性确定 pod 的 port。targetPort 必须和容器监听的 port 相同。
+- **功能** : 该类型的服务只在 Kubernetes 集群内部可访问。它会为 Service 分配一个虚拟 IP 地址（ClusterIP），可以被集群内的其他服务通过该 IP 访问。
 
-## Headless Service
+- **用途** : 适用于集群内部的服务通信，不暴露给外部。
 
-![headless 工作场景](https://cdn.jsdelivr.net/gh/li199-code/blog-imgs@main/17190647224751719064721585.png)
+- **示例应用场景** : 微服务之间相互调用。
 
-ClusterIP 有自己的 ip，Headless 就是不分配 ip 的服务。上图中，两个 mongo-db 节点中的 pod 想要相互通信（比如主从数据同步），就要通过 headless service。
-
-## nodePort Service
+2. **NodePort**
 
 ![NodePort工作场景](https://cdn.jsdelivr.net/gh/li199-code/blog-imgs@main/17190651734751719065172873.png)
 
-nodePort 是节点机器上的一个端口， nodePort 可以直接被 Ingress 或者外部请求访问到。它的数值范围是 30000-32767. nodePort 被创建，同时意味着有一个内部的 clusterIP service 被创建。
+- **功能** : 将 Service 暴露为每个节点（Node）上的静态端口（30000-32767），通过节点的 IP 地址和该端口，外部客户端可以访问服务。它仍然会分配一个 `ClusterIP`，所以集群内部也能访问该服务。
 
-## loadBalancer Service
+- **用途** : 外部客户端通过集群的任意节点 IP 和指定的端口访问服务。
+
+- **示例应用场景** : 简单的外部访问，用于开发或测试环境。
+
+3. **LoadBalancer**
 
 ![loadBalancer工作场景](https://cdn.jsdelivr.net/gh/li199-code/blog-imgs@main/17190655884871719065587171.png)
 
