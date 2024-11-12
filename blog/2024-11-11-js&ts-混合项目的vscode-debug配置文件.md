@@ -3,7 +3,7 @@ title: "JS&TS 混合项目的VSCode debug配置文件"
 slug: "js&ts -hun-he-xiang-mu-de-vscode debug-pei-zhi-wen-jian"
 date: 2024-11-11
 description: "来自真实项目的配置文件"
-tags: [dev]
+tags: [vscode, typescript]
 ---
 
 读懂配置文件，有助于分析 bug，并且更深一步了解项目。
