@@ -55,6 +55,7 @@ const config: Config = {
           postsPerPage: 10,
           
           // 其他配置项...
+          onUntruncatedBlogPosts: 'ignore',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -98,6 +99,9 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    future: {
+      experimental_faster: true,
     },
   } satisfies Preset.ThemeConfig,
 };

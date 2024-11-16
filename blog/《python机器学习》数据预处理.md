@@ -1,6 +1,6 @@
 ---
 title: 《python 机器学习》数据预处理
-author: Jason Lee
+authors: Jason
 tags: [machine-learning]
 categories: python 机器学习
 abbrlink: 3e539f1

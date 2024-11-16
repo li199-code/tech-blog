@@ -1,6 +1,6 @@
 ---
 title: python机器学习-模型评估与参数调优
-author: Jason Lee
+authors: Jason
 tags: [machine-learning]
 categories: python 机器学习
 abbrlink: a279c7bb

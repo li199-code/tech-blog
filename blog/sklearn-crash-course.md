@@ -1,6 +1,6 @@
 ---
 title: sklearn crash course
-author: Jason Lee
+authors: Jason
 tags: [sklearn]
 abbrlink: 7a11e9dc
 date: 2023-09-24 23:06:24

@@ -1,6 +1,6 @@
 ---
 title: 《python机器学习》分类算法
-author: Jason Lee
+authors: Jason
 tags: [machine-learning]
 categories: python 机器学习
 abbrlink: ccf92e0d

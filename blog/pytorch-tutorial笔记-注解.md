@@ -1,6 +1,6 @@
 ---
 title: pytorch tutorial 笔记+注解
-author: Jason Lee
+authors: Jason
 tags: [pytorch, deep-learning]
 abbrlink: 12cb415e
 date: 2023-05-23 13:12:24

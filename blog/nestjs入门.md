@@ -1,6 +1,6 @@
 ---
 title: nestjs入门
-author: Jason Lee
+authors: Jason
 tags: [nestjs]
 abbrlink: b2ab1948
 date: 2023-07-31 15:50:40

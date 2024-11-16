@@ -1,6 +1,6 @@
 ---
 title: 我的python开发环境管理实践
-author: Jason Lee
+authors: Jason
 tags: [python]
 abbrlink: 6f4edb74
 date: 2023-06-21 08:33:38

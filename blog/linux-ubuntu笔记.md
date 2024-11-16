@@ -1,6 +1,6 @@
 ---
 title: LINUX 基础操作（基于UBUNTU）
-author: Jason Lee
+authors: Jason
 tags: [linux, ubuntu]
 abbrlink: be5075f5
 date: 2023-07-10 19:43:44

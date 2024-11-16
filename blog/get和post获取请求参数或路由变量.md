@@ -1,6 +1,6 @@
 ---
 title: django get和post获取请求参数或路由变量
-author: Jason Lee
+authors: Jason
 abbrlink: 3d3c510a
 date: 2023-05-13 22:31:53
 tags: [categories]

@@ -1,6 +1,6 @@
 ---
 title: flex/grid布局在tailwindcss中的使用
-author: Jason Lee
+authors: Jason
 tags: [css, tailwindcss]
 abbrlink: f53843af
 date: 2023-05-03 09:13:46

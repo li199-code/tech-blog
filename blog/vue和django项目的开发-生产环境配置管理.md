@@ -1,6 +1,6 @@
 ---
 title: vue和django项目的开发/生产环境配置管理
-author: Jason Lee
+authors: Jason
 tags: [vue, django, 最佳实践]
 categories: 全栈项目wey
 abbrlink: 6f16f258

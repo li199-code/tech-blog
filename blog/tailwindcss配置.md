@@ -1,6 +1,6 @@
 ---
 title: tailwindcss配置
-author: Jason Lee
+authors: Jason
 tags: [tailwindcss]
 abbrlink: 72ab1f3b
 date: 2023-04-27 16:50:53

@@ -1,6 +1,6 @@
 ---
 title: python机器学习-数据降维
-author: Jason Lee
+authors: Jason
 tags: [machine-learning]
 categories: python 机器学习
 abbrlink: 43105c4b

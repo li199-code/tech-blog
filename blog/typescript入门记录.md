@@ -1,6 +1,6 @@
 ---
 title: TypeScript 为 JavaScript 带来了什么
-author: Jason Lee
+authors: Jason
 tags: [TypeScript]
 abbrlink: e0862921
 date: 2023-08-04 09:29:21

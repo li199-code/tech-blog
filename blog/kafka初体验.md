@@ -1,6 +1,6 @@
 ---
 title: kafka初体验
-author: Jason Lee
+authors: Jason
 tags: [kafka]
 abbrlink: e9469f09
 date: 2023-09-20 09:06:00

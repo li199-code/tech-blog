@@ -1,6 +1,6 @@
 ---
 title: pgsql常用且容易忘记的一些用法
-author: Jason Lee
+authors: Jason
 tags: [pgsql]
 abbrlink: 9b2898ad
 date: 2023-11-11 16:41:49

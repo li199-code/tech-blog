@@ -1,6 +1,6 @@
 ---
 title: django默认和自定义的用户身份验证
-author: Jason Lee
+authors: Jason
 tags: [django]
 abbrlink: 9a6288e8
 date: 2023-05-10 09:16:20
@@ -9,7 +9,7 @@ categories:
 
 ## 前言
 
-在做项目时，身份验证是目前疑虑最多的地方：为什么这里要新建一个User模型？为什么要重写管理器？这篇文章通过查阅文档，尝试从最佳实践的角度给出答案。
+在做项目时，身份验证是目前疑虑最多的地方：为什么这里要新建一个 User 模型？为什么要重写管理器？这篇文章通过查阅文档，尝试从最佳实践的角度给出答案。
 
 ## 默认验证方式
 
@@ -17,15 +17,15 @@ categories:
 
 注册 登录 登出
 
-### 默认User模型
+### 默认 User 模型
 
-默认User模型主要包含以下字段：username、password、email、first_name、last_name。也就是说，如果有别的字段的需求（比如用户头像），就要自定义用户模型。目前暂不涉及权限，等到后续项目中接触到了，再添加。
+默认 User 模型主要包含以下字段：username、password、email、first_name、last_name。也就是说，如果有别的字段的需求（比如用户头像），就要自定义用户模型。目前暂不涉及权限，等到后续项目中接触到了，再添加。
 
 ### 视图函数
 
 #### 注册
 
-没有内置的注册视图，有内置的注册表单UserCreationForm。UserCreationForm的要求字段为用户名、邮箱和两次密码输入。
+没有内置的注册视图，有内置的注册表单 UserCreationForm。UserCreationForm 的要求字段为用户名、邮箱和两次密码输入。
 
 ```
 # views.py
@@ -64,7 +64,7 @@ class SignUpForm(UserCreationForm):
 
 #### 登录
 
-有内置视图LoginView，有内置的表单AuthenticationForm
+有内置视图 LoginView，有内置的表单 AuthenticationForm
 
 ```
 # forms.py
@@ -87,7 +87,7 @@ LOGIN_REDIRECT_URL = '/'
 
 #### 登出
 
-有内置视图LogoutView，无需视图
+有内置视图 LogoutView，无需视图
 
 ```
 # urls.py
@@ -99,13 +99,13 @@ LOGOUT_REDIRECT_URL = '/'
 
 ## 自定义验证方式
 
-有两个可以自定义的地方：认证后端和User模型
+有两个可以自定义的地方：认证后端和 User 模型
 
 ### 认证后端
 
-前面提到的authenticate和login方法都是django默认认证后端提供的。
+前面提到的 authenticate 和 login 方法都是 django 默认认证后端提供的。
 
-### User模型
+### User 模型
 
 一般有两个需要扩展：模型本身和管理器（manager）
 
@@ -154,4 +154,3 @@ class User(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 ```
-

@@ -1,6 +1,6 @@
 ---
 title: "基于eggjs, sequelize和pgsql的小需求"
-author: Jason Lee
+authors: Jason
 tags: [eggjs, sequelize]
 abbrlink: e42bc1ee
 date: 2023-09-29 12:13:49

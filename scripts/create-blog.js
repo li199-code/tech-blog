@@ -25,6 +25,7 @@ const slug = pinyin(title, {
 // 定义frontmatter内容，添加slug字段
 const frontmatter = `---
 title: "${title}"
+authors: Jason
 slug: "${slug}"
 date: ${date}
 description: "这里写描述"

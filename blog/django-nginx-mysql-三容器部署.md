@@ -1,6 +1,6 @@
 ---
 title: django+nginx+mysql 三容器部署
-author: Jason Lee
+authors: Jason
 tags: [docker, django, mysql]
 categories: 全栈项目wey
 abbrlink: f5061afc

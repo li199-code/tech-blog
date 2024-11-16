@@ -1,6 +1,6 @@
 ---
 title: 人人都能听懂的 javascript 异步机制
-author: Jason Lee
+authors: Jason
 tags: [异步编程]
 categories: JavaScript异步编程
 abbrlink: c8c3d6c5

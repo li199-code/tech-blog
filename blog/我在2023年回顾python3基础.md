@@ -1,6 +1,6 @@
 ---
 title: 我在2023年回顾python3基础
-author: Jason Lee
+authors: Jason
 tags: [python]
 abbrlink: 31e7f4f2
 date: 2023-05-06 17:02:05
@@ -23,7 +23,7 @@ categories:
 
 ### 迭代器
 
-迭代器是一种对象，它可以用于迭代序列中的元素。迭代器具有一个__next__()方法，该方法返回序列中的下一个元素，并在没有更多元素时引发StopIteration异常。
+迭代器是一种对象，它可以用于迭代序列中的元素。迭代器具有一个**next**()方法，该方法返回序列中的下一个元素，并在没有更多元素时引发 StopIteration 异常。
 
 创建迭代器的方法：一个从现有序列中直接创造：`iter(seq)`，另一种需要创建一个类（由类实例化出对象），类带有`__iter__`和`__next__`方法：
 
@@ -32,10 +32,10 @@ class FibonacciIterator:
     def __init__(self):
         self.a = 0
         self.b = 1
-    
+
     def __iter__(self):
         return self
-    
+
     def __next__(self):
         result = self.b
         self.a, self.b = self.b, self.a + self.b
@@ -43,7 +43,7 @@ class FibonacciIterator:
 
 fib_iter = FibonacciIterator()
 for i in range(10):
-    print(next(fib_iter)) 
+    print(next(fib_iter))
 ## 另外一种调用方式
 for value in fib_iter:
     print(value)
@@ -51,7 +51,7 @@ for value in fib_iter:
 
 ### 生成器
 
-生成器是一种特殊的函数，它使用yield关键字来产生一个值，并暂停函数的执行。每次调用生成器函数时，它都会从上一次停止的位置继续执行，直到遇到yield语句。生成器是一种简单而强大的工具，可以在处理大型数据集时提高性能和内存效率。
+生成器是一种特殊的函数，它使用 yield 关键字来产生一个值，并暂停函数的执行。每次调用生成器函数时，它都会从上一次停止的位置继续执行，直到遇到 yield 语句。生成器是一种简单而强大的工具，可以在处理大型数据集时提高性能和内存效率。
 
 ```
 def fibonacci():
@@ -68,7 +68,7 @@ for value in f:
     print(value)
 ```
 
-可以看出，生成器在这个例子中会简短一些。同时可以看出，调用的时候，生成器和迭代器的两种方式都一样，分别是固定次数（可能会超出边界而引发StopIteration异常，以及forin循环。创建时的不同是：生成器是一个函数，而迭代器是一个对象。
+可以看出，生成器在这个例子中会简短一些。同时可以看出，调用的时候，生成器和迭代器的两种方式都一样，分别是固定次数（可能会超出边界而引发 StopIteration 异常，以及 forin 循环。创建时的不同是：生成器是一个函数，而迭代器是一个对象。
 
 ## 不定长参数
 
@@ -86,7 +86,7 @@ printinfo( 70, 6, a=60, b=50)
 
 out:
 
-输出: 
+输出:
 70
 (6,)
 {'a': 60, 'b': 50}
@@ -94,4 +94,4 @@ out:
 
 ## 异常处理
 
-raise 抛出异常，程序把异常打印出来（抛给用户），并停止后续代码的运行。如果没有raise，程序将继续运行。
+raise 抛出异常，程序把异常打印出来（抛给用户），并停止后续代码的运行。如果没有 raise，程序将继续运行。
