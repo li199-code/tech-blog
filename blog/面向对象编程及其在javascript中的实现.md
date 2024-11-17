@@ -1,11 +1,15 @@
 ---
-title: 面向对象编程及其在 javascript 中的实现
-tags: [es6]
+title: 面向对象编程及其在 JS/TS 中的实现
+tags: [es6, oop]
 abbrlink: 584a7bac
 date: 2023-12-16 23:38:01
 updated: 2024-05-03 00:00:00
 categories: Javascript 进阶
 ---
+
+OOP 在不同编程语言中都通用的概念，并用 js 举例说明，同时包含 ts 相对于 js 独有的特性。
+
+<!-- truncate -->
 
 ## 历史
 
@@ -80,9 +84,9 @@ console.log(dog.metaData); // getter调用
 dog.setType = "alaska dog"; // setter调用
 ```
 
-### 继承
+### 继承和多态
 
-新类拓展父类，而不需要将父类复制一遍，这就是继承。问题是，如何继承？如何拓展？借助 super 关键字。
+**新类拓展父类，而不需要将父类复制一遍，这就是继承**。问题是，如何继承？如何拓展？借助 super 关键字。
 
 ```javascript
 class Animal {
@@ -115,6 +119,10 @@ cat.makeNoise("meow", 40);
 ```
 
 这里的 super 就起到继承的作用，构造函数的继承就是 super()，而方法的继承是 super.methodName()。super 只能在类的构造函数和方法中使用。必须在构造函数中首先调用 super：在子类的构造函数中，必须在使用 this 之前先调用 super。否则会抛出错误。
+
+在上面的例子中，还实现了多态。**多态在 javascript 中就是重写方法，也就是一个方法在不同类中有不同行为**。如上面的`makeNoise`，在父类和子类的逻辑不同。
+
+---
 
 以下内容只存在于 typescript 中。
 
