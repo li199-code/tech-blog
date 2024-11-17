@@ -15,9 +15,8 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.cardContent h3 {
+.cardContent h5 {
     margin: 0;
-    font-size: 1.25rem;
 }
 
 .cardContent p {
