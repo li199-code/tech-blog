@@ -7,9 +7,11 @@ description: "js运行cpu密集型任务而不会阻塞的办法"
 tags: [js, 底层, 事件循环, 进程, 线程]
 ---
 
+import LinkCard from "@site/src/components/LinkCard";
+
 这篇文章，我打算从 js 有哪些实现计算密集型任务的手段出发，延伸到进程和线程，再到 golang, 从而对并发有一个深刻的认知。
 
-<!-- truncate -->
+{/* truncate */}
 
 需求是这样的，一个 Nodejs web 后端，需要执行一个数据处理步骤，在内存中进行，非常耗时。项目用 pm2 起了四个服务，用 pm2 的观测命令可以看到，每次场景会把一个服务的 cpu 占满，运行四次就会把四个服务都占满，后面整个服务就瘫痪了，无法处理新的请求。
 
@@ -276,3 +278,10 @@ Main process: Subprocess exited with code 0
 ## 总结
 
 Nodejs 一直有一种说法，也就是擅于 IO 密集型任务，而不是 cpu 密集任务。这篇文章用详细的例子印证了这个说法，并于 Go 语言做了比较，发现 Go 的执行效率比 Nodejs 高了很多。
+
+参考文章：
+
+<LinkCard
+  title="Node.js Worker Threads Vs. Child Processes: Which one should you use?"
+  link="https://amplication.com/blog/nodejs-worker-threads-vs-child-processes-which-one-should-you-use"
+/>
