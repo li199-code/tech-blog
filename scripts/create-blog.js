@@ -31,13 +31,13 @@ date: ${date}
 description: "这里写描述"
 tags: []
 ---
+import LinkCard from "@site/src/components/LinkCard";
 
-
-<!-- truncate -->
+{/* truncate */}
 `;
 
-// 文件名格式：YYYY-MM-DD-title.md
-const fileName = `${date}-${formattedTitle}.md`;
+// 文件名格式：YYYY-MM-DD-title.mdx
+const fileName = `${date}-${formattedTitle}.mdx`;
 
 // 目标路径：/blog 文件夹
 const filePath = path.join(__dirname, '..', 'blog', fileName);
