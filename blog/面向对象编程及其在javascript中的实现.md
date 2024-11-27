@@ -5,7 +5,7 @@ abbrlink: 584a7bac
 date: 2023-12-16 23:38:01
 updated: 2024-05-03 00:00:00
 categories: Javascript 进阶
-author: Jason
+authors: Jason
 ---
 
 OOP 在不同编程语言中都通用的概念，并用 js 举例说明，同时包含 ts 相对于 js 独有的特性。
