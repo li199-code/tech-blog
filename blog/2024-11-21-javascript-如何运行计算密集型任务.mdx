@@ -140,7 +140,7 @@ computeProcess.on("message", (result) => {
 // 发送任务数据到子进程
 console.time("1");
 console.log("Main process: Starting CPU-intensive task...");
-computeProcess.send(1e10); // 计算 1 到 100000000 的总和
+computeProcess.send(1e10);
 
 console.log("other task");
 ```
@@ -161,6 +161,77 @@ Main process: Task result is 10000000000
 进程由于其相互间的隔离性较好，所以适合在执行外部程序或脚本时使用，或者需要 standard input/output 作为消息传递的场景。
 
 线程则因其上下文切换开销小，故而是 cpu 密集任务的首选。
+
+## 并行的力量
+
+首先对并发和并行的概念做一下区分。
+
+![并发和并行](https://img.jasonleehere.com/202412012219985.png)
+
+并发是cpu的一个核上进行多个任务执行，而并行则是多个核同时执行多个任务。有赖于现代cpu的核心数越来越多，并行是提高程序执行效率的手段之一。
+
+在上面的例子中，因为程序恰好可以分割成各个互不相关的子任务，所以可以利用多核执行，从而提高效率。所以，`worker_threads`的代码可以进一步改造为：
+
+```js
+const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+const os = require('os');
+
+// 定义一个计算函数（在 Worker 中运行）
+function calculateRange(start, end) {
+    let sum = 0;
+    for (let i = start; i <= end; i++) {
+        sum += 1;
+    }
+    return sum;
+}
+
+// Worker 逻辑
+if (!isMainThread) {
+    const { start, end } = workerData;
+    const result = calculateRange(start, end);
+    parentPort.postMessage(result); // 将结果返回给主线程
+}
+
+// 主线程逻辑
+if (isMainThread) {
+  const total = 1e10;
+  console.log('core nums:', os.cpus().length)
+    const threads = os.cpus().length; // 设置 Worker 数量
+    const range = Math.ceil(total / threads);
+    let completed = 0;
+  let finalSum = 0;
+  
+  console.time('1')
+
+    for (let i = 0; i < threads; i++) {
+        const start = i * range + 1;
+        const end = i === threads - 1 ? total : (i + 1) * range;
+        const worker = new Worker(__filename, { workerData: { start, end } });
+
+        worker.on('message', (result) => {
+            finalSum += result;
+            completed++;
+            if (completed === threads) {
+              console.log(`Final Sum: ${finalSum}`);
+              console.timeEnd('1')
+            }
+        });
+
+        worker.on('error', (err) => console.error(err));
+        worker.on('exit', (code) => {
+            if (code !== 0) console.error(`Worker stopped with exit code ${code}`);
+        });
+    }
+}
+```
+
+打印结果：
+```
+core nums: 16
+Final Sum: 10000000000
+1: 1.295s
+```
+
 
 ## Nodejs vs Go
 
@@ -273,13 +344,74 @@ Main process: Subprocess exited with code 0
 
 时间缩短到约 1/3。
 
+上面提到的worker_threads可以利用并行计算的优势，而Go更是这方面的专家。借助于goroutine，Go能创建出多个并发执行。
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func main() {
+	// 定义计数范围和批次
+	total := 10000000000
+	batchCount := 100
+	batchSize := total / batchCount
+
+	// 创建 WaitGroup 和结果 channel
+	var wg sync.WaitGroup
+	results := make(chan int, batchCount)
+
+	// 启动 goroutine 分批计算
+	for i := 0; i < batchCount; i++ {
+		start := i*batchSize + 1
+		end := (i + 1) * batchSize
+		wg.Add(1)
+		go func(start, end int) {
+			defer wg.Done()
+			sum := 0
+			for j := start; j <= end; j++ {
+				sum += 1
+			}
+			results <- sum
+			// fmt.Printf("Batch %d-%d calculated sum: %d\n", start, end, sum)
+		}(start, end)
+	}
+
+	// 等待所有 goroutines 完成并关闭结果 channel
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	// 汇总所有批次的结果
+	totalSum := 0
+	for sum := range results {
+		totalSum += sum
+	}
+
+	// fmt.Printf("Total sum from 1 to %d is: %d\n", total, totalSum)
+	fmt.Println(totalSum)
+}
+```
+
+执行时间仅需 538.356ms.
+
 ## 总结
 
-Nodejs 一直有一种说法，也就是擅于 IO 密集型任务，而不是 cpu 密集任务。这篇文章用详细的例子印证了这个说法，并于 Go 语言做了比较，发现 Go 的执行效率比 Nodejs 高了很多。
+Nodejs 一直有一种说法，也就是擅于 IO 密集型任务，而不是 cpu 密集任务。这篇文章用详细的例子印证了这个说法，但是不仅于此，而是用worker_threads核child_process探索更多nodejs执行此类任务的
+潜力。经实验表明，借助于工作线程核并行运算，速度能提升10倍。另外，与 Go 语言做了比较，发现 Go 的执行效率比 Nodejs 高了很多。
 
 参考文章：
 
 <LinkCard
   title="Node.js Worker Threads Vs. Child Processes: Which one should you use?"
   link="https://amplication.com/blog/nodejs-worker-threads-vs-child-processes-which-one-should-you-use"
+/>
+
+<LinkCard
+  title="并发介绍"
+  link="https://www.topgoer.com/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/%E5%B9%B6%E5%8F%91%E4%BB%8B%E7%BB%8D.html/"
 />
