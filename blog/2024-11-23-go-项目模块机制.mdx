@@ -80,7 +80,7 @@ func main() {
 go mod tidy
 ```
 
-这会更新 `go.mod` 并生成一个 `go.sum` 文件，用于记录项目的所有依赖及其版本。
+这会更新 `go.mod` 并生成一个 `go.sum` 文件，用于下载的校验。
 
 #### 4. 编译和运行项目
 
@@ -103,6 +103,17 @@ go build
 - 项目源码保存在你定义的目录中（不受 `GOPATH` 限制）。
 
 - 依赖库缓存保存在 `GOPATH/pkg/mod` 目录中。
+
+## 如何修改依赖版本
+
+`go get`命令也是go modules系统中的一个命令，用来管理依赖包。运行它可以下载和更新依赖。例如，要更新依赖库，你可以运行：
+
+```bash
+go get -u <dependency-name>@version
+```
+
+`go get`也会自动更新`go.mod`和`go.sum`。
+
 
 ## init 函数和 import
 
