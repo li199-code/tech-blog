@@ -1,6 +1,6 @@
 ---
 title: 通俗易懂的Promise解释
-tags: [javascript]
+tags: [异步编程, promise]
 categories: JavaScript异步编程
 abbrlink: 5d9fa5e8
 date: 2022-07-26 17:58:45
