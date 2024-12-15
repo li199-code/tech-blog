@@ -1,5 +1,5 @@
 ---
-title: "Web 压力测试实践"
+title: "Nodejs Web 服务压力测试及优化实践"
 authors: Jason
 slug: "web -ya-li-ce-shi-shi-jian"
 date: 2024-12-14
@@ -77,3 +77,12 @@ instance.on('done', (results) => {
 Nodejs 依靠非阻塞 IO 和事件循环机制能在单线程下实现高并发。它能取得高并发的前提是让事件循环尽可能活跃，因此要减少 cpu 阻塞任务的执行时间。这方面最常用的做法是空间换时间（如把接口中的 cpu 阻塞任务的结果缓存起来），以及把任务 offload 到 worker threads 中。
 
 另外，利用 pm2 工具起一个多核多进程的集群，让每个进程都跑在单独的线程上，这样能充分利用多核。最佳实践是把 pm2 的进程数设置为 CPU 核数的一半。
+
+## 优化实践
+
+需要借助工具配合压测来观察 cpu 和内存占用率。Nodejs 是基于 V8 引擎的，chrome 也同样内置了 V8，所以可以借助 chrome dev tool 来对 Nodejs 进行调试。对入口文件运行`node --inspect-brk index.js`，返回一个 ws 链接，去到 chrome 浏览器的地址栏，输入`chrome://inspect`, 就能看到 Nodejs 进程了。具体参照下面的链接：
+
+<LinkCard
+  title="NodeJs进阶开发、性能优化指南"
+  link="https://juejin.cn/post/7095354780079357966?from=search-suggest#heading-4"
+/>
