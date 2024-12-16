@@ -12,11 +12,13 @@ date: 2024-06-22 18:52:40
 
 在 Kubernetes 中，`Service` 是一种抽象，定义了一组逻辑上相同的 Pod，并提供了稳定的网络服务入口。`Service` 有三种主要类型，分别是：
 
+## 三种 service 类型
+
 1. **ClusterIP（默认类型）**
 
 ![clusterIP工作场景](https://cdn.jsdelivr.net/gh/li199-code/blog-imgs@main/17190591816891719059180297.png)
 
-- **功能** : 该类型的服务只在 Kubernetes 集群内部可访问。它会为 Service 分配一个虚拟 IP 地址（ClusterIP），可以被集群内的其他服务通过该 IP 访问。
+- **功能** : ClusterIP 是虚拟的，不和实体服务器绑定。该类型的服务只在 Kubernetes 集群内部可访问。它会为 Service 分配一个虚拟 IP 地址（ClusterIP），可以被集群内的其他服务通过该 IP 访问。spec.ports.port 定义了集群内访问这个 clusterIP service 的端口，spec.ports.targetPort 定义了 Pod 容器的端口，这两个配置在其他类型的 service 中都有，且意义相同。
 
 - **用途** : 适用于集群内部的服务通信，不暴露给外部。
 
@@ -41,3 +43,7 @@ date: 2024-06-22 18:52:40
 ![17190658904841719065889152.png](https://cdn.jsdelivr.net/gh/li199-code/blog-imgs@main/17190658904841719065889152.png)
 
 在生产环境中，出于安全考虑，应该用 Ingress 或者 loadBalancer service 处理外部请求，而不是 nodePort。
+
+## 总结
+
+这三种 service 类型，就像洋葱圈一样，一环套一环，从内向外，最里层是 ClusterIP，然后是 nodePort，再外一层是 loadBalancer。
