@@ -50,14 +50,14 @@ const instance = autocannon({
   url,
   connections: 100,
   duration: 10,
-  headers: {
-    'User-Agent': 'autocannon'
-    'Content-Type': 'application/json'
-  },
   requests: [
     {
-        method: 'GET',
-        path: '/'
+      method: 'GET',
+      path: '/'
+      headers: {
+        'User-Agent': 'autocannon'
+        'Content-Type': 'application/json'
+      },
     },
   ]
 })
